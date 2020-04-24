@@ -9,7 +9,7 @@ socketio = SocketIO()
 def create_app(test_config=None, debug=False):
   app = Flask(__name__, instance_relative_config=True)
   app.config.from_mapping(
-    SECRET_KEY = 'dev',
+    SECRET_KEY = os.urandom(16),
   )
 
   if test_config is None:
