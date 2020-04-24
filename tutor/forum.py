@@ -3,8 +3,8 @@ from datetime import datetime
 
 from flask import Blueprint, request, g, abort, render_template, redirect, url_for
 
-from tutorona.auth import login_required
-from tutorona.db import get_db, get_dict_cursor
+from .auth import login_required
+from .db import get_db, get_dict_cursor
 
 bp = Blueprint('forum', __name__)
 

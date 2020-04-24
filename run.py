@@ -1,4 +1,4 @@
-from tutorona import create_app, socketio
+from tutor import create_app, socketio
 
 app = create_app(debug=True)
 

@@ -1,15 +1,16 @@
 [tool.poetry]
-name = "tutorona"
+name = "tutor"
 version = "0.1.0"
-description = "web app for code jam"
-authors = ["Your Name <you@example.com>"]
+description = "freelance tutoring to adjust to covid19"
+authors = ["soulwa <sam.c.lyon@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-flask = "^1.1"
-flask-socketio = "^4.2"
+flask = "^1.1.2"
+flask-socketio = "^4.3.0"
 pytz = "^2019.3"
-psycopg2-binary = "^2.8"
+psycopg2-binary = "^2.8.5"
+python-dotenv = "^0.13.0"
 
 [tool.poetry.dev-dependencies]
 

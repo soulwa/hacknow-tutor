@@ -1,6 +1,5 @@
 import pytz
 from datetime import datetime
-# from hashlib import sha256
 
 from flask import Blueprint, g, render_template, request, redirect, url_for, abort, session
 from flask_socketio import SocketIO, join_room, emit

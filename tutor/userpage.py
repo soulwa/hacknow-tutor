@@ -1,6 +1,6 @@
 from flask import Blueprint, request, g, abort, render_template, redirect, url_for, session
-from tutorona.auth import login_required
-from tutorona.db import get_db, get_dict_cursor
+from .auth import login_required
+from .db import get_db, get_dict_cursor
 
 bp = Blueprint('userpage', __name__)
 
