@@ -1,20 +1,5 @@
 {% extends 'layout.html' %}
-<div class="card" style="width: 20rem;">
-  <img src="..." class="card-img-top" alt="insert image">
-  <div class="card-body">
-    <h5 class="card-title">Calculus</h5>
-    <p class="card-text">Math tutor who specializes in Calculus. He is available on Zoom as well as Skype and Facetime. </p>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">Justin Wozniak</li>
-    <li class="list-group-item">Hi! My name is Justin and I have 8 years of teaching experience at UC Berkley. I majored in applied mathamatics at UCLA and I would love to teach!</li>
-    <li class="list-group-item">contact information: SATtutor@gmail.com</li>
-  </ul>
-  <div class="card-body">
-    <a href="#" class="card-link"> link</a>
-    <a href="#" class="card-link"> link</a>
-  </div>
-</div>
+
 {% block title %} index {% endblock %}
 
 {% block header %} Forum {% endblock %}
@@ -24,13 +9,17 @@
   {% if posts == [] %}
     <p>no posts yet! post something!</p>
   {% else %}
+  <div class="form-group shadow-textarea">
+    <textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="9" cols="2"
+    placeholder="Title" name="post_content" type="text" required></textarea>
+  </div>
     <table>
       <thead>
         <tr>
-          <th scope="col">Title</th>
-          <th scope="col">User</th>
-          <th scope="col">Preview</th>
-          <th scope="col">Date</th>
+          <th width="100%" cellspacing="8" cellpadding="0" border="10" align="center" scope="col">Title</th>
+          <th width="100%" cellspacing="8" cellpadding="0" border="10" align="center"scope="col">User</th>
+          <th width="100%" cellspacing="8" cellpadding="0" border="10" align="center"scope="col">Preview</th>
+          <th width="100%" cellspacing="8" cellpadding="0" border="10" align="center"scope="col">Date</th>
         </tr>
       </thead>
       <tbody>
@@ -50,9 +39,13 @@
   {% endif %}
 
   <form action="/" method="post">
-    <input autofocus name="title" placeholder="Title" type="text" maxlength="128" required>
-    <textarea name="post_content" rows="9" cols="100" placeholder="write your post here!" type="text" required></textarea>
-    <input type="checkbox" name="tags" value="science">
+    <input autofocus name="title" placeholder="Title" type="text" maxlength="128" required style="" width:284px;>
+  <div class="form-group shadow-textarea">
+    <textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="9" 
+    placeholder="Write something here..." name="post_content" cols="10"  type="text" required></textarea>
+  </div>
+
+     <input type="checkbox" name="tags" value="science">
       Science
     <input type="checkbox" name="tags" value="math">
       Math
@@ -62,7 +55,6 @@
       History
     <input type="text" name="other_tags">
       Other tags: separate by space
-    <input type="submit" value="Publish">
-  </form>
+      <input type="submit" value="Publish">
 
 {% endblock %}
