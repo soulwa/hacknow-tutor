@@ -24,7 +24,7 @@ def index():
     lang = user['lang']
     cur.execute(
       "SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id WHERE posts.lang = %s \
-      AND posts.post_content LIKE %%%s%% ORDER BY created DESC;", 
+      ORDER BY created DESC;", 
       (lang,)
     )
     posts = cur.fetchall()
@@ -36,10 +36,7 @@ def index():
     title = request.form.get('title')
     post_content = request.form.get('post_content')
 
-    tags = request.form.getlist('tags')
-    if request.form.get('other_tags'):
-      other_tags = request.form.get('other_tags').split()
-      tags = tags + other_tags
+    tags = request.form.get('tags').split()
 
     if title is None or post_content is None or title == "" or post_content == "":
       abort(400, "please add a title/content!") # post missing title or content
@@ -52,16 +49,17 @@ def index():
     )
     post_id = cur.fetchone()[0]
     
-    cur.executemany("INSERT INTO tags (tag_content) VALUES (%s) ON CONFLICT (tag_content) DO NOTHING;", iter([(tag,) for tag in tags]))
+    if tags != []:
+      cur.executemany("INSERT INTO tags (tag_content) VALUES (%s) ON CONFLICT (tag_content) DO NOTHING;", iter([(tag,) for tag in tags]))
 
-    cur.execute(
-      "SELECT id FROM tags WHERE tag_content IN ({0});".format(', '.join('%s' for _ in tags)),
-      tags)
-    tag_ids = cur.fetchall()
+      cur.execute(
+        "SELECT id FROM tags WHERE tag_content IN ({0});".format(', '.join('%s' for _ in tags)),
+        tags)
+      tag_ids = cur.fetchall()
 
-    tag_map = [(post_id, tag_id['id']) for tag_id in tag_ids]
-    print(tag_map)
-    cur.executemany("INSERT INTO tags_to_posts (post_id, tag_id) VALUES (%s, %s);", tag_map)
+      tag_map = [(post_id, tag_id['id']) for tag_id in tag_ids]
+      cur.executemany("INSERT INTO tags_to_posts (post_id, tag_id) VALUES (%s, %s);", tag_map)
+
     db.commit()
     cur.close()
 
@@ -80,14 +78,20 @@ def search():
 
   if query is None:
     query = ''
+  query = '%' + query + '%'
   if tag_query is None:
     tag_query = ''
+  tag_query = '%' + tag_query + '%'
 
   cur.execute(
-    """SELECT posts.*, users.username, tags.tag_content FROM posts 
-      JOIN users ON posts.user_id = users.id WHERE posts.lang = %s 
-      AND posts.post_content LIKE %%%s%% 
-      AND tags.tag_content LIKE %%%s%% 
+    """SELECT posts.*, users.username, tags.tag_content 
+      FROM posts
+      INNER JOIN tags_to_posts ON posts.id = tags_to_posts.post_id
+      INNER JOIN tags ON tags.id = tags_to_posts.tag_id
+      JOIN users ON posts.user_id = users.id 
+      WHERE posts.lang = %s
+      AND posts.post_content LIKE %s 
+      AND tags.tag_content LIKE %s 
       ORDER BY created DESC;""", 
     (user['lang'], query, tag_query)
   )

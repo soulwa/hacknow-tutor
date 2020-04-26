@@ -6,12 +6,17 @@
 
 {% block main %}
 
-  <h1>{{ forum_post['title']}}
-    </h1>
+  <h1>
+    {{ forum_post['title']}}
+  </h1>
   <h2>
     <a href="{{ url_for('userpage.user', username=forum_post['username'])}}"> {{ forum_post['username'] }}</a>
   </h2>
-  <p>{{ forum_post['post_content'] }}...</p>
+  
+  <div class="container" style="background-color: hsl(203, 28%, 52%); border-radius: 25px;">
+    {{ html_post|safe }}
+  </div>
+  
 
 <form class="form">
     <div class="form"> 

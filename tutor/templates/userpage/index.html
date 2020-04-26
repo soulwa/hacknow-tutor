@@ -31,14 +31,14 @@
 
     <div class="container">
       <ul class="list-group">
-        <li class="list-group-item"> email: </li>
+        <li class="list-group-item"> email: {{ user_info['email'] }}</li>
         <li class="list-group-item"> 
           <div class="d-flex justify-content-between">
             <h6>github: {{ user_info['github'] }}</h6>
             {% if g.user['id'] == user_info['id'] %}
-              <form class="form-inline" action='/social/github' method='post'>
+              <form class="form-inline" action='/socials/github' method='post'>
                 <div class="form-group mx-sm-3 mb-2">
-                  <input type="text" class="form-control" id="socialGithub" placeholder="GitHub">
+                  <input name="github" type="text" class="form-control" id="socialGithub" placeholder="GitHub">
                 </div>
                 <button type="submit" class="btn btn-primary mb-2">Update</button>
               </form>
@@ -49,9 +49,9 @@
           <div class="d-flex justify-content-between">
             <h6>discord: {{ user_info['discord'] }}</h6>
             {% if g.user['id'] == user_info['id'] %}
-              <form class="form-inline" action='/social/discord' method='post'>
+              <form class="form-inline" action='/socials/discord' method='post'>
                 <div class="form-group mx-sm-3 mb-2">
-                  <input type="text" class="form-control" id="socialDiscord" placeholder="Discord">
+                  <input name="discord" type="text" class="form-control" id="socialDiscord" placeholder="Discord">
                 </div>
                 <button type="submit" class="btn btn-primary mb-2">Update</button>
               </form>
@@ -62,9 +62,9 @@
           <div class="d-flex justify-content-between">
             <h6>twitter: {{ user_info['twitter'] }}</h6>
             {% if g.user['id'] == user_info['id'] %}
-              <form class="form-inline" action='/social/twitter' method='post'>
+              <form class="form-inline" action='/socials/twitter' method='post'>
                 <div class="form-group mx-sm-3 mb-2">
-                  <input type="text" class="form-control" id="socialTwitter" placeholder="Twitter">
+                  <input name="twitter" type="text" class="form-control" id="socialTwitter" placeholder="Twitter">
                 </div>
                 <button type="submit" class="btn btn-primary mb-2">Update</button>
               </form>

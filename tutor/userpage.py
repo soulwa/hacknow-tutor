@@ -34,12 +34,15 @@ def edit_social(social):
   cur = get_dict_cursor(db)
   user = g.user
 
-  if social != 'twitter' or social !='github' or social != 'discord':
+  print(social)
+  print(social == 'github')
+  
+  if social != 'twitter' and social != 'github' and social != 'discord':
     return abort(403, "social not implemented!")
   
   else:
     social_link = request.form.get(social)
-    cur.execute("UPDATE users SET %s=%s WHERE id=%s", (social, social_link, user['id'],))
+    cur.execute("UPDATE users SET {0}=%s WHERE id=%s".format(social), (social_link, user['id'],))
     db.commit()
   
   cur.close()
