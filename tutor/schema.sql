@@ -14,9 +14,9 @@ CREATE TABLE users (
   last_signin TIMESTAMP NOT NULL,
   lang CHAR(3) NOT NULL,
   bio TEXT NOT NULL DEFAULT '',
-  twitter TEXT NOT NULL DEFAULT '' UNIQUE,
-  discord TEXT NOT NULL DEFAULT '' UNIQUE,
-  github TEXT NOT NULL DEFAULT '' UNIQUE
+  twitter TEXT NOT NULL DEFAULT '',
+  discord TEXT NOT NULL DEFAULT '',
+  github TEXT NOT NULL DEFAULT ''
 );
 
 CREATE TABLE posts (
