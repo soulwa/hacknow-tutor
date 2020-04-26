@@ -1,7 +1,6 @@
 import os
 import psycopg2
 import psycopg2.extras
-import sqlite3
 import click
 
 from flask import current_app, g
@@ -29,7 +28,6 @@ def init_db():
     contents = f.read()
     cur.execute(contents)
     db.commit()
-
 
 
 @click.command('init-db')
