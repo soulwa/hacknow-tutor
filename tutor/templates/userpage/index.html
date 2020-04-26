@@ -6,52 +6,93 @@
 
 {% block main %}
 
-  <h1>
-    {{ user_info['username'] }}
-  </h1>
-  <h2><a href="{{ url_for('chat.chat', username=user_info['username']) }}">chat with {{ user_info['username'] }}!</a></h2>
-  <ul>
+    <div class="container pb-5">
+      <div class="row">
+        <h1 class="display-1">{{ user_info['username'] }}</h1>
+        <p>Joined: {{ user_info['created'] }}</p>
+      </div>
+      <a class="btn btn-primary" href="{{ url_for('chat.chat', username=user_info['username']) }}" role="button">
+        Chat with {{ user_info['username'] }}!
+      </a>
+    </div>
 
-    <li>Bio: {{ user_info['bio'] }}</li>
+    <div class="container">
+      <h3 class="mr-auto">{{ user_info['bio'] }}</h3>
+      {% if g.user['id'] == user_info['id'] %}
+        <form action='/edit' method='post'>
+          <div class="form-group">
+            <label for="bioInput">bio:</label>
+            <textarea class="form-control mb-1" id="bioInput" placeholder="edit bio here!" name="new_bio" rows=3></textarea>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </div>
+        </form>
+      {% endif %}
+    </div>
 
-    {% if g.user['id'] == user_info['id'] %}
-      <form action='/edit' method='post'>
-        <input type="text" placeholder="edit bio here" name="new_bio">
-        <input type="submit">
-      </form>
-    {% endif %}
+    <div class="container">
+      <ul class="list-group">
+        <li class="list-group-item"> email: </li>
+        <li class="list-group-item"> 
+          <div class="d-flex justify-content-between">
+            <h6>github: {{ user_info['github'] }}</h6>
+            {% if g.user['id'] == user_info['id'] %}
+              <form class="form-inline" action='/social/github' method='post'>
+                <div class="form-group mx-sm-3 mb-2">
+                  <input type="text" class="form-control" id="socialGithub" placeholder="GitHub">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Update</button>
+              </form>
+            {% endif %}
+          </div>
+        </li>
+        <li class="list-group-item"> 
+          <div class="d-flex justify-content-between">
+            <h6>discord: {{ user_info['discord'] }}</h6>
+            {% if g.user['id'] == user_info['id'] %}
+              <form class="form-inline" action='/social/discord' method='post'>
+                <div class="form-group mx-sm-3 mb-2">
+                  <input type="text" class="form-control" id="socialDiscord" placeholder="Discord">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Update</button>
+              </form>
+            {% endif %}
+          </div>
+        </li>
+        <li class="list-group-item"> 
+          <div class="d-flex justify-content-between">
+            <h6>twitter: {{ user_info['twitter'] }}</h6>
+            {% if g.user['id'] == user_info['id'] %}
+              <form class="form-inline" action='/social/twitter' method='post'>
+                <div class="form-group mx-sm-3 mb-2">
+                  <input type="text" class="form-control" id="socialTwitter" placeholder="Twitter">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Update</button>
+              </form>
+            {% endif %}
+          </div>
+        </li>
+      </ul>
+    </div>
 
-    <li>Email: {{ user_info['email'] }}</li>
-    <li>Joined: {{ user_info['created'] }}</li>
-  </ul>
+    
+    <div class="container mt-3">
+      <h2>{{ user_info['username'] }}'s posts</h2>
 
-  <h2>
-    {{ user_info['username'] }}'s posts
-  </h2>
-
-  {% if not user_posts %}
-    <p>This user has no posts yet</p>
-
-  {% else %}
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Title</th>
-          <th scope="col">Preview</th>
-          <th scope="col">Date</th>
-        </tr>
-      </thead>
-      <tbody>
+      {% if not user_posts %}
+        <p>This user has no posts yet</p>
+      {% else %}
         {% for post in user_posts %}
-          <tr>
-            <td><a href="{{ url_for('forum.forum_post', id=post['id']) }}">{{ post['title'] }}</a></td>
-            <td>{{ post['post_content'][0:29] }}</td>
-            <td>{{ post['created'] }}</td>
-          </tr>
+          <div class="card my-3" style="width: 40rem;">
+            <div class="card-body">
+              <h4 class="card-title">{{ post['title'] }}</h4>
+              <p class="card-text">{{ post['post_content'][0:29] }}</p>
+              <p>{{ post['created'] }}</p>
+              <a class="stretched-link" href="{{ url_for('forum.forum_post', id=post['id']) }}" ></a>
+            </div>
+          </div>
         {% endfor %}
-        {% endif %}
-      </tbody>
-    </table>
+      {% endif %}
+    </div>
 
 
 {% endblock %}

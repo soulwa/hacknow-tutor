@@ -6,32 +6,49 @@
 
 {% block main %}
 
-  <h1>{{ forum_post['title']}} by 
+  <h1>{{ forum_post['title']}}
+    </h1>
+  <h2>
     <a href="{{ url_for('userpage.user', username=forum_post['username'])}}"> {{ forum_post['username'] }}</a>
-  </h1>
-  <h2>created {{ forum_post['created']}}</h2>
-  <p>{{ forum_post['post_content'] }}</p>
+  </h2>
+  <p>{{ forum_post['post_content'] }}...</p>
 
-  <form action="{{ url_for('forum.comment', id=forum_post['id']) }}" method="post">
-    <textarea name="comment" rows="3" cols="50" placeholder="leave a comment!" type="text" required></textarea>
-    <input type="submit" value="Comment">
+<form class="form">
+    <div class="form"> 
+      <textarea name="comment" style="padding-bottom: 20px" rows="4" cols="100" placeholder="leave a comment!" type="text" required></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit" value="Comment" style="box-sizing: border-box;">
+      comment 
+    </button>
   </form>
 
 {% if comments %}
-    <ul>
-      {% for comment in comments %}
-        <li> <a href="{{ url_for('userpage.user', username=comment['username'])}}"> {{ comment['username'] }} </a>
-         at {{ comment['created'] }}: {{ comment['comment_content'] }}
-          </li>
-        <hr>
-      {% endfor %}
-    </ul>
+<ul>
+  {% for comment in comments %}
+<div class="card" style="width: 30rem;">
+  <div class="card-header">
+    <li> <a href="{{ url_for('userpage.user', username=comment['username'])}}"> {{ comment['username'] }} </a>
+  </div>
+  <div class="card-body" style="width: 40rem;">
+    <p style="width= 28px;" class=card-text>{{ comment['created'] }}: {{ comment['comment_content'] }}</p>
+    <a href="{{ url_for('userpage.user', username=comment['username'])}}" class=btn btn-primary>Go to profile</a>
+  </div>
+</div>
+   {% endfor %}
+  </ul> 
   {% endif %}
 
-{% if tags %}
-  <ul>
-    {% for tag in tags %}
-    <li> {{ tag['tag_content'] }} </li>
+{% if tags %} 
+<ul>
+  {% for tag in tags %}
+<div class="card" style="width: 18rem;" style="align-items: left;">
+  <div class="card-body">
+    <h5 class="card-title">Tag</h5>
+    <p class="card-text">{{ tag['tag_content'] }}</p>
+  </div>
+</div>
+</ul>
+ 
     {% endfor %}
   </ul>
 {% endif %}
