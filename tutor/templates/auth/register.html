@@ -5,11 +5,17 @@
 {% block header %} Register {% endblock %}
 
 {% block main %}
-  <form action="/register" method="post">
-    <input autocomplete="off" autofocus name="email" placeholder="Email" type="email" required>
-    <input name="username" placeholder="Username" type="text" required>
-    <input name="password" placeholder="Password" type="password" required>
-    <input name="confirmation" placeholder="Confirm password" type="password" required>
+  <form class="text-center p-5" action="/register" method="post">
+    <div class="form-group">
+      <input autocomplete="off" autofocus name="email" placeholder="Email" type="email" required>
+    </div>
+    <div class="form-group">
+      <input name="username" placeholder="Username" type="text" required>
+    </div>
+    <div class="form-group">
+      <input name="password" placeholder="Password" type="password" required>
+      <input name="password" placeholder="Confirm" type="password" required>
+    </div>
     <select name="language" required>
       <option value="eng" selected>English</option>
       <option value="cmn">Mandarin Chinese</option>

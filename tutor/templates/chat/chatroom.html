@@ -58,9 +58,15 @@
       	</thead>
       	<tbody class="message-container">
 			{% for message in messages %}
+				
 				<tr>
-					<td>{{ message['sender'] }}</td>
-					<td>{{ message['recipient'] }}</td>
+					{% if message['sender'] == g.user['id'] %}
+						<td>{{ g.user['username'] }}</td>
+						<td>{{ other_user['username'] }}</td>
+					{% else %}
+						<td>{{ other_user['username'] }}</td>
+						<td>{{ g.user['username'] }}</td>
+					{% endif %}
 					<td>{{ message['created'] }}</td>
 					<td>{{ message['content'] }}</td>
 				</tr>
