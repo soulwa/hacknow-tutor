@@ -13,7 +13,10 @@ CREATE TABLE users (
   created TIMESTAMP NOT NULL,
   last_signin TIMESTAMP NOT NULL,
   lang CHAR(3) NOT NULL,
-  bio TEXT NOT NULL DEFAULT ''
+  bio TEXT NOT NULL DEFAULT '',
+  twitter TEXT UNIQUE,
+  discord TEXT UNIQUE,
+  github TEXT UNIQUE
 );
 
 CREATE TABLE posts (

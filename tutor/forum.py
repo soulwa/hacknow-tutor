@@ -5,6 +5,7 @@ from flask import Blueprint, request, g, abort, render_template, redirect, url_f
 
 from .auth import login_required
 from .db import get_db, get_dict_cursor
+from .md import md_to_html
 
 bp = Blueprint('forum', __name__)
 
@@ -19,10 +20,11 @@ def index():
     abort(403, 'please clear your session data!')
 
   if request.method == 'GET':
+
     lang = user['lang']
     cur.execute(
       "SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id WHERE posts.lang = %s \
-      ORDER BY created DESC;", 
+      AND posts.post_content LIKE %%%s%% ORDER BY created DESC;", 
       (lang,)
     )
     posts = cur.fetchall()
@@ -66,6 +68,34 @@ def index():
     return redirect(url_for('index'))
 
 
+@bp.route('/search', methods=['GET'])
+@login_required
+def search():
+  db = get_db()
+  cur = get_dict_cursor(db)
+  user = g.user
+
+  query = request.args.get('q')
+  tag_query = request.args.get('tq')
+
+  if query is None:
+    query = ''
+  if tag_query is None:
+    tag_query = ''
+
+  cur.execute(
+    """SELECT posts.*, users.username, tags.tag_content FROM posts 
+      JOIN users ON posts.user_id = users.id WHERE posts.lang = %s 
+      AND posts.post_content LIKE %%%s%% 
+      AND tags.tag_content LIKE %%%s%% 
+      ORDER BY created DESC;""", 
+    (user['lang'], query, tag_query)
+  )
+  posts = cur.fetchall()
+
+  return render_template('forum/index.html', posts=posts)
+
+
 @bp.route('/post/<int:id>', methods=['GET', 'POST'])
 @login_required
 def forum_post(id):
@@ -82,6 +112,7 @@ def forum_post(id):
       (id,)
     )
     post = cur.fetchone()
+    html_content = md_to_html(post['post_content'])
 
     cur.execute(
       "SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id = users.id WHERE comments.post_id = %s \
@@ -95,7 +126,7 @@ def forum_post(id):
     tags = cur.fetchall()
     cur.close()
 
-    return render_template('forum/post.html', forum_post=post, comments=comments, tags=tags)
+    return render_template('forum/post.html', forum_post=post, comments=comments, tags=tags, html_post=html_content)
 
 
 @bp.route('/comment/<int:id>', methods=['POST'])

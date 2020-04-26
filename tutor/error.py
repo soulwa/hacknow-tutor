@@ -7,6 +7,3 @@ def handle_http_exception(e):
 def handle_http_404(e):
 	response = e.get_response()
 	return render_template('error/404.html'), 404
-
-# def handle_http_401(e):
-# 	return '401 error', 401
