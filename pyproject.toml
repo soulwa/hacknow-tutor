@@ -2,7 +2,7 @@
 name = "tutor"
 version = "0.1.0"
 description = "freelance tutoring to adjust to covid19"
-authors = ["soulwa <sam.c.lyon@gmail.com>"]
+authors = ["soulwa <sam.c.lyon@gmail.com>", "riyasharma <riyasharma262626@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
