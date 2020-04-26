@@ -21,7 +21,7 @@ CREATE TABLE posts (
   title VARCHAR(128) NOT NULL,
   post_content TEXT NOT NULL,
   created TIMESTAMP NOT NULL,
-  lang CHAR(2) NOT NULL,
+  lang CHAR(3) NOT NULL,
   user_id INTEGER NOT NULL,
   FOREIGN KEY(user_id) REFERENCES users(id)
 );
@@ -38,7 +38,7 @@ CREATE TABLE comments (
 
 CREATE TABLE tags (
   id SERIAL PRIMARY KEY,
-  tag_content TEXT NOT NULL
+  tag_content TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE tags_to_posts (
