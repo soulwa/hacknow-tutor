@@ -48,17 +48,17 @@ def index():
       "INSERT INTO posts (title, post_content, created, lang, user_id) VALUES (%s, %s, %s, %s, %s) RETURNING id;",
       (title, post_content, datetime.now().astimezone(pytz.timezone('US/Eastern')), lang, user['id'])
     )
-    post_id = cur.fetchall()
-
-    cur.executemany("INSERT OR IGNORE INTO tags (tag_content) VALUES (%s);", iter([(tag,) for tag in tags]))
+    post_id = cur.fetchone()[0]
+    
+    cur.executemany("INSERT INTO tags (tag_content) VALUES (%s) ON CONFLICT (tag_content) DO NOTHING;", iter([(tag,) for tag in tags]))
 
     cur.execute(
       "SELECT id FROM tags WHERE tag_content IN ({0});".format(', '.join('%s' for _ in tags)),
       tags)
-    tag_ids=  cur.fetchall()
+    tag_ids = cur.fetchall()
 
-    tag_map = iter([(post_id[0], tag_id['id']) for tag_id in tag_ids])
-    
+    tag_map = [(post_id, tag_id['id']) for tag_id in tag_ids]
+    print(tag_map)
     cur.executemany("INSERT INTO tags_to_posts (post_id, tag_id) VALUES (%s, %s);", tag_map)
     db.commit()
     cur.close()
