@@ -6,55 +6,56 @@
 
 {% block main %}
 
-  {% if posts == [] %}
-    <p>no posts yet! post something!</p>
-  {% else %}
-  <div class="form-group shadow-textarea">
-    <textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="9" cols="2"
-    placeholder="Title" name="post_content" type="text" required></textarea>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <form class="form-inline my-5" action='/search' method='get'>
+          <input class="form-control mr-sm-2" type="search" placeholder="Search by post content" name="q">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+      <div class="col">
+        <form class="form-inline my-5" action='/search' method='get'>
+          <input class="form-control mr-sm-2" type="search" placeholder="Search by tag" name="tq">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
   </div>
-    <table>
-      <thead>
-        <tr>
-          <th width="100%" cellspacing="8" cellpadding="0" border="10" align="center" scope="col">Title</th>
-          <th width="100%" cellspacing="8" cellpadding="0" border="10" align="center"scope="col">User</th>
-          <th width="100%" cellspacing="8" cellpadding="0" border="10" align="center"scope="col">Preview</th>
-          <th width="100%" cellspacing="8" cellpadding="0" border="10" align="center"scope="col">Date</th>
-        </tr>
-      </thead>
-      <tbody>
+
+  <div class="container my-5 float-right sticky-top">
+    <form action="/" method="post" class="form">
+      <div class="form-group">
+        <input autofocus class="form-control" name="title" placeholder="Post now!" type="text" maxlength="128" required style="width:40rem;">
+      </div>
+      <div class="form-group shadow-textarea">
+        <textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="9" 
+        placeholder="Write something here..." name="post_content" cols="10"  type="text" style="width: 40rem;" required></textarea>
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="tags" style="width: 40rem;" placeholder="separate tags by space!"> 
+      </div>
+      <button type="submit" class="btn btn-primary" value="Publish">Publish</button>
+    </form>
+  </div>
+  
+
+  <div class="container float-left">
+    {% if posts == [] %}
+      <p>no posts yet! post something!</p>
+    {% else %}
         {% for post in posts %}
-          <tr>
-            <td><a href="{{ url_for('forum.forum_post', id=post['id']) }}">{{ post['title'] }}</a></td>
-              <td><a href="{{ url_for('userpage.user', username=post['username'])}}">
-                {{ post['username'] }}
-              </a>
-              </td>
-            <td>{{ post['post_content'][0:29] }}</td>
-            <td>{{ post['created'] }}</td>
-          </tr>
+            <div class="card my-3 ml-5" style="width: 45rem;">
+              <div class="card-body">
+                <h4 class="card-title">{{ post['title'] }}</h4>
+                <a href="{{ url_for('userpage.user', username=post['username']) }}" class="card-subtitle">{{ post['username'] }}</a>
+                <p class="card-text">{{ post['post_content'][0:29] }}</p>
+                <p>{{ post['created'] }}</p>
+                <a class="stretched-link" href="{{ url_for('forum.forum_post', id=post['id']) }}" ></a>
+              </div>
+            </div>
         {% endfor %}
-      </tbody>
-    </table>
-  {% endif %}
-
-  <form action="/" method="post">
-    <input autofocus name="title" placeholder="Title" type="text" maxlength="128" required style="" width:284px;>
-  <div class="form-group shadow-textarea">
-    <textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="9" 
-    placeholder="Write something here..." name="post_content" cols="10"  type="text" required></textarea>
+    {% endif %}
   </div>
-
-     <input type="checkbox" name="tags" value="science">
-      Science
-    <input type="checkbox" name="tags" value="math">
-      Math
-    <input type="checkbox" name="tags" value="language">
-      Language
-    <input type="checkbox" name="tags" value="history">
-      History
-    <input type="text" name="other_tags">
-      Other tags: separate by space
-      <input type="submit" value="Publish">
 
 {% endblock %}
